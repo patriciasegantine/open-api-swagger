@@ -1,0 +1,27 @@
+{
+  "name": "open-api-swagger",
+  "version": "1.0.0",
+  "description": "This a Open API Swagger aplication",
+  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "open-api-swagger"
+  },
+  "license": "ISC",
+  "author": "Patricia Segantine",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node --experimental-strip-types --watch --no-warnings src/server.ts"
+  },
+  "dependencies": {
+    "@fastify/cors": "^11.2.0",
+    "@fastify/swagger": "^9.7.0",
+    "@scalar/fastify-api-reference": "^1.49.5",
+    "fastify": "^5.8.4"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.0",
+    "typescript": "^6.0.2"
+  }
+}
