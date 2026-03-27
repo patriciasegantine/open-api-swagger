@@ -3,6 +3,7 @@ import fastifyCors from "@fastify/cors";
 import fastifySwagger from "@fastify/swagger";
 import scalarUI from "@scalar/fastify-api-reference";
 import getUsersRoute from "./routes/get-users-route.ts";
+import createUsersRoute from "./routes/create-user-router.ts";
 
 const app = fastify();
 
@@ -20,6 +21,7 @@ app.register(fastifySwagger, {
   }
 });
 
+app.register(createUsersRoute)
 app.register(getUsersRoute)
 
 app.get('/openapi.json', () => app.swagger());
