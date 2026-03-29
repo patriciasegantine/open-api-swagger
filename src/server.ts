@@ -4,6 +4,7 @@ import fastifySwagger from "@fastify/swagger";
 import scalarUI from "@scalar/fastify-api-reference";
 import getUsersRoute from "./routes/get-users-route.ts";
 import createUsersRoute from "./routes/create-user-router.ts";
+import getUserByIdRoute from "./routes/get-user-by-Id-route.ts";
 
 const app = fastify();
 
@@ -31,8 +32,9 @@ app.register(fastifySwagger, {
   }
 });
 
-app.register(createUsersRoute)
-app.register(getUsersRoute)
+app.register(getUsersRoute);
+app.register(createUsersRoute);
+app.register(getUserByIdRoute);
 
 app.get('/openapi.json', () => app.swagger());
 
