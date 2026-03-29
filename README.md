@@ -15,18 +15,20 @@ A simple project built to explore the OpenAI API using Fastify, TypeScript, and 
 - Node.js
 - TypeScript
 - Fastify
+- @sinclair/typebox
+- @fastify/type-provider-typebox
 - @fastify/swagger
 - @scalar/fastify-api-reference
 - @fastify/cors
 
 ## What’s included
 
-- Fastify server
-- OpenAPI schema generation
+- Fastify server with TypeBox type provider
+- Automatic OpenAPI schema generation from TypeBox schemas
+- Full TypeScript type inference in route handlers
 - Interactive API documentation with Scalar
 - CORS support
-- Sample `/users` endpoint
-- Base structure for OpenAI API integration
+- Sample `/users` endpoints (GET and POST)
 
 ## Getting started
 
@@ -52,21 +54,25 @@ OpenAPI JSON:
 ```plaintext
 http://localhost:3333/openapi.json
 ```
-Interactive docs:
+Interactive docs (Scalar):
 ```plaintext
 http://localhost:3333/docs
 ```
-## Example endpoint
+## Endpoints
 
-GET /users
+### GET /users
 
-Returns a mock list of users with pagination metadata.
+Returns a paginated list of users.
 
-Query parameters
-- page
-- pageSize
+**Query parameters**
 
-### Example response
+| Parameter | Type | Default | Description |
+|---|---|---|---|
+| `page` | integer | `1` | Page number (min: 1) |
+| `pageSize` | integer | `10` | Items per page (min: 1) |
+
+
+**Example response**
 
 ```json
 {
@@ -83,11 +89,33 @@ Query parameters
 }
 ```
 
+### POST /users
+
+Creates a new user. Requires Bearer token authentication.
+
+**Request body**
+
+```json
+{
+  "name": "Alice",
+  "email": "alice@example.com"
+}
+```
+**Responses**
+
+| Status | Description |
+|---|---|
+| `201` | User created successfully |
+| `400` | Validation error |
+| `409` | Email already exists |
+
 ---
+
 > ## Notes
 >
-> This project is intentionally simple. The goal was to explore the OpenAI API and experiment with a clean setup for documentation, validation, and future integration.
+> Schemas are defined with TypeBox — a single source of truth for validation, TypeScript types, and OpenAPI documentation. No separate spec file needed.
 
+---
 
 ### Licence
 

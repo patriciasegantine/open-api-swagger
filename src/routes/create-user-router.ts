@@ -1,80 +1,38 @@
-import type { FastifyPluginAsync } from 'fastify';
+import { Type } from '@sinclair/typebox';
+import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 
-export const createUsersRoute: FastifyPluginAsync = async (app) => {
-  app.post('/users',  {
+export const createUsersRoute: FastifyPluginAsyncTypebox = async (app) => {
+  app.post('/users', {
     schema: {
       description: 'Create user',
-      security: [
-        { bearerAuth: []}
-      ],
-      body: {
-        type: 'object',
-        examples:[
-          {
-            name: 'Alice',
-            email: 'alice@example.com',
-          }],
-          properties: {
-            name: {
-              type: ['string'],
-              maxLength: 100,
-            },
-            email: {
-              type: 'string',
-              format: 'email'},
-          },
-        required: ['name', 'email'],
-      },
       tags: ['Users'],
+      security: [{ bearerAuth: [] }],
+      body: Type.Object({
+        name: Type.String({ maxLength: 100 }),
+        email: Type.String({ format: 'email' }),
+      }, {
+        examples: [{ name: 'Alice', email: 'alice@example.com' }],
+      }),
       response: {
-        201: {
-          description: 'User created!',
-          type: 'object',
-          properties: {
-            userId: {
-              type: 'string',
-              format: 'uuid',
-              description: 'The ID of the created user',
-            }
-          },
-        },
-        
-        400: {
-          description: 'Validation error!',
-          type: 'object',
-          properties: {
-            errors: {
-              type: 'array',
-              items: {
-                type: 'object',
-                required: ['message', 'name'],
-                properties: {
-                  name: {
-                    type: 'string',
-                  },
-                  error: {
-                    type: 'string',
-                  },
-                },
-              },
-            }
-          },
-        },
-        
-        409: {
-          description: 'User email already exists!',
-          type: 'object',
-          properties: {
-            message: {
-              type: 'string',
-            },
-          },
-        },
+        201: Type.Object({
+          userId: Type.String({ format: 'uuid', description: 'The ID of the created user' }),
+        }, { description: 'User created!' }),
+        400: Type.Object({
+          errors: Type.Array(
+            Type.Object({
+              name: Type.String(),
+              error: Type.Optional(Type.String()),
+            })
+          ),
+        }, { description: 'Validation error!' }),
+        409: Type.Object({
+          message: Type.String(),
+        }, { description: 'User email already exists!' }),
       },
     },
   }, () => {
     return { userId: 'a3bb189e-8bf9-3888-9912-ace4e6543002' };
-  })
-}
+  });
+};
 
 export default createUsersRoute;
