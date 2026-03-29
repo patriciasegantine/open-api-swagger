@@ -28,7 +28,7 @@ A simple project built to explore the OpenAI API using Fastify, TypeScript, and 
 - Full TypeScript type inference in route handlers
 - Interactive API documentation with Scalar
 - CORS support
-- Sample `/users` endpoints (GET and POST)
+- Sample `/users` endpoints (GET, POST, and GET by ID)
 
 ## Getting started
 
@@ -109,10 +109,36 @@ Creates a new user. Requires Bearer token authentication.
 | `400` | Validation error |
 | `409` | Email already exists |
 
+### GET /users/:id
+
+Returns a single user by their UUID.
+
+**Path parameters**
+
+| Parameter | Type | Description |
+|---|---|---|
+| `id` | string (uuid) | The user's unique identifier |
+
+**Responses**
+
+| Status | Description |
+|---|---|
+| `200` | User found |
+| `404` | User not found |
+
+**Example response**
+
+```json
+{
+  "id": "a3bb189e-8bf9-3888-9912-ace4e6543002",
+  "name": "Alice",
+  "email": "alice@example.com"
+}
+```
+
 ---
 
 > ## Notes
->
 > Schemas are defined with TypeBox — a single source of truth for validation, TypeScript types, and OpenAPI documentation. No separate spec file needed.
 
 ---
